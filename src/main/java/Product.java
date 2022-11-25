@@ -7,5 +7,4 @@ public class Product {
         cost = productCoast;
     }
 
-
 }

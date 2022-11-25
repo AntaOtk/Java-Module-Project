@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -8,8 +7,9 @@ public class Main {
 
     public static void main(String[] args) {
         int peoples = readCounter();
-        ArrayList<Product> productsList = readProducts();
-        printConclusion(productsList, calculate(peoples, productsList));
+        ProductList products = new  ProductList();
+        products.readProducts();
+        printConclusion(products, products.calculate(peoples));
     }
 
     public static int readCounter() {
@@ -26,55 +26,12 @@ public class Main {
             } else {
                 System.out.println("Неверное количество людей");
             }
-
         }
     }
 
-    public static ArrayList<Product> readProducts() {
-        ArrayList<Product> productsList = new ArrayList<>();
-        String end = "завершить";
-        String add1;
-        String add2;
-
-        for (; ; ) {
-            System.out.println("введите имя");
-            add1 = scanner.nextLine();
-            System.out.println("введите стоимость");
-            add2 = scanner.nextLine();
-            boolean err = false;
-            for (int i = 0; i < add2.length(); i++) {
-                if ((!Character.isDigit(add2.charAt(i))) && (i != add2.length() - 3)) {
-                    err = true;
-                }
-            }
-            if ((add2.charAt(add2.length() - 3) == '.') && !err) {
-                productsList.add(new Product(add1, Float.parseFloat(add2)));
-                System.out.println("Товар успешно добавлен. Хотите ввсти ещё товар?");
-                if (end.equalsIgnoreCase(scanner.nextLine())) {
-                    break;
-                }
-            } else {
-                System.out.println("Товар введён неверно");
-            }
-
-        }
-        return productsList;
-    }
-
-
-    public static float calculate(int n, ArrayList<Product> productsList) {
-        float sum = 0;
-        for (int i = 0; i < productsList.size(); i++) {
-            sum += productsList.get(i).cost;
-        }
-        return sum / n;
-    }
-
-    public static void printConclusion(ArrayList<Product> productsList, float output) {
+    public static void printConclusion(ProductList products, float output) {
         System.out.println("Добавленные товары:");
-        for (int i = 0; i < productsList.size(); i++) {
-            System.out.println(productsList.get(i).name);
-        }
+        products.writeNameList();
         int rub = (int) output;
         if ((rub % 10 == 1) && (rub / 10 != 1)) {
             System.out.println(String.format("%.2f", output) + " рубль");
